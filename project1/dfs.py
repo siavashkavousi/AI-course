@@ -1,17 +1,16 @@
-from collections import deque
 from problem import Problem
 
 
-class Bfs(Problem):
+class Dfs(Problem):
     def __init__(self, graph, start, goal, tree_method=False):
-        super(Bfs, self).__init__(graph, start, goal, tree_method)
-        self.frontier = deque([(start, [start])])
+        super(Dfs, self).__init__(graph, start, goal, tree_method)
+        self.frontier = ([(start, [start])])
         self.visited = set()
         self.expanded = set()
 
     def search(self):
         while self.frontier:
-            node, path = self.frontier.popleft()
+            node, path = self.frontier.pop()
             if not self.tree_method:
                 self.visited.add(node)
             # extracts node adjacents

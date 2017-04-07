@@ -27,4 +27,4 @@ class TestBfsGraph(TestCase):
 
     def test_shortest_path(self):
         bfs = Bfs(self.graph, 'A', 'F')
-        self.assertEqual(3, bfs.shortest_path(list(bfs.search())))
+        self.assertEqual(3, bfs.shortest_path(list(bfs.search()))[0])
