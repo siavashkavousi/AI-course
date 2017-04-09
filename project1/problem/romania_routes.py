@@ -26,6 +26,12 @@ class RomaniaRoutes(Problem):
             Node(City('lasi', [('neamt', 87), ('vaslui', 92)])),
             Node(City('neamt', [('lasi', 87)])),
         ]
+        # self.graph = [
+        #     Node(City('arad', [('zerind', 75), ('pashmak', 75)])),
+        #     Node(City('vaslui', [('zerind', 142), ('pashmak', 150)])),
+        #     Node(City('zerind', [('arad', 75), ('vaslui', 142)])),
+        #     Node(City('pashmak', [('arad', 75), ('vaslui', 150)])),
+        # ]
         self.init_node = init_node
         self.goal_node = goal_node
 
@@ -48,7 +54,7 @@ class RomaniaRoutes(Problem):
         for adjacent in node.value.adjacents:
             if adjacent == action:
                 new_node = self.find_node(adjacent[0])
-                new_node = Node(new_node.value, node, action)
+                new_node = Node(new_node.value, node, action, node.depth + 1)
                 return new_node
 
     def is_goal(self, node):
@@ -66,7 +72,7 @@ class RomaniaRoutes(Problem):
     @goal_node.setter
     def goal_node(self, node):
         if node is None:
-            self._goal_node = self.graph[11]
+            self._goal_node = self.graph[1]
         else:
             self._goal_node = node
 
@@ -94,7 +100,7 @@ class City:
 
     def __eq__(self, other):
         if isinstance(other, City):
-            if self.city_name == other.city_name and self.adjacents == other.adjacents:
+            if self.city_name == other.city_name:
                 return True
             return False
         return NotImplemented

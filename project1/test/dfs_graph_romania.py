@@ -1,12 +1,12 @@
 from unittest import TestCase
 from problem.romania_routes import RomaniaRoutes
-from solver.bfs import Bfs
+from solver.dfs import Dfs
 
 
-class TestBfsGraphRomaniaRoutes(TestCase):
+class TestDfsGraphRomaniaRoutes(TestCase):
     def setUp(self):
         self.romania_routes = RomaniaRoutes()
 
     def test_solved(self):
-        bfs = Bfs(self.romania_routes)
-        print(bfs.solve())
+        dfs = Dfs(self.romania_routes, depth_limit=5)
+        print(dfs.solve())
