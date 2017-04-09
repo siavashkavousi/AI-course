@@ -37,6 +37,5 @@ class Bfs(object):
             for action in self.problem.actions(node):
                 new_node = self.problem.result(action, node)
                 if self.problem.is_goal(new_node):
-                    path = self.problem.solution(new_node)
-                    return path
+                    return self.problem.solution(new_node)
                 self.add_to_frontier(new_node)
