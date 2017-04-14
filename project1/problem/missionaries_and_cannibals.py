@@ -75,13 +75,15 @@ class MissionariesAndCannibals(Problem):
             self._goal_node = node
 
     def solution(self, goal_node):
-        def traverse(node):
-            print(node.value)
+        def traverse(node, path=[]):
+            path.append(str(node.value))
             if node.parent is None:
                 return
-            traverse(node.parent)
+            traverse(node.parent, path)
 
-        traverse(goal_node)
+        path = []
+        traverse(goal_node, path)
+        return path
 
     def get_h(self, node):
         pass
