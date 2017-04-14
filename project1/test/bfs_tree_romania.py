@@ -8,5 +8,5 @@ class TestBfsGraphRomaniaRoutes(TestCase):
         self.romania_routes = RomaniaRoutes()
 
     def test_solved(self):
-        bfs = Bfs(self.romania_routes)
+        bfs = Bfs(self.romania_routes, tree_search=True)
         print(bfs.solve())

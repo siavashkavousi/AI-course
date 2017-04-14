@@ -26,12 +26,6 @@ class RomaniaRoutes(Problem):
             Node(City('lasi', [('neamt', 87), ('vaslui', 92)])),
             Node(City('neamt', [('lasi', 87)])),
         ]
-        # self.graph = [
-        #     Node(City('arad', [('zerind', 75), ('pashmak', 75)])),
-        #     Node(City('vaslui', [('zerind', 142), ('pashmak', 150)])),
-        #     Node(City('zerind', [('arad', 75), ('vaslui', 142)])),
-        #     Node(City('pashmak', [('arad', 75), ('vaslui', 150)])),
-        # ]
         self.init_node = init_node
         self.goal_node = goal_node
 
@@ -51,11 +45,13 @@ class RomaniaRoutes(Problem):
         return adjacents
 
     def result(self, action, node):
+        # TODO don't love this code :(
         for adjacent in node.value.adjacents:
             if adjacent == action:
                 new_node = self.find_node(adjacent[0])
                 new_node = Node(City(new_node.value.city_name, new_node.value.adjacents, action[1]),
-                                node, action, node.depth + 1)
+                                node,
+                                action)
                 return new_node
 
     def is_goal(self, node):
@@ -63,20 +59,13 @@ class RomaniaRoutes(Problem):
             return True
         return False
 
-    def compute_cost(self, current_node, parent_node):
-        def traverse(node, cost=0):
-            if node.parent is None:
-                return cost
-            return traverse(node.parent, cost + node.value.distance)
-
-        def traverse_limited(current_node, cost=0):
+    def compute_cost(self, current_node=None, parent_node=None):
+        def traverse(current_node, cost=0):
             if current_node == parent_node:
                 return cost
-            return traverse_limited(current_node.parent, cost + current_node.value.distance)
+            return traverse(current_node.parent, cost + current_node.value.distance)
 
-        if parent_node:
-            return traverse_limited(current_node)
-        else:
+        if current_node and parent_node:
             return traverse(current_node)
 
     @property
@@ -126,5 +115,5 @@ class City:
     def __ne__(self, other):
         return not self == other
 
-        # def __hash__(self):
-        #     return hash(tuple(sorted({'city_name': self.city_name, 'distance': self.distance})))
+    def __hash__(self):
+        return hash((self.city_name, self.distance))

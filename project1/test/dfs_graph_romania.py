@@ -8,5 +8,5 @@ class TestDfsGraphRomaniaRoutes(TestCase):
         self.romania_routes = RomaniaRoutes()
 
     def test_solved(self):
-        dfs = Dfs(self.romania_routes, depth_limit=5)
+        dfs = Dfs(self.romania_routes, depth_limit=8)
         print(dfs.solve())
