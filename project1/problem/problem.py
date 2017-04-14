@@ -43,3 +43,7 @@ class Problem(object):
     @abstractmethod
     def solution(self, goal_node):
         pass
+
+    @abstractmethod
+    def get_h(self, node):
+        pass

@@ -14,7 +14,8 @@ class EightPuzzle(Problem):
     @init_node.setter
     def init_node(self, node):
         if node is None:
-            self._init_node = Node([1, 2, 3, 4, 5, 0, 7, 8, 6])
+            self._init_node = Node([1, 2, 3, 4, 5, 7, 8, 6, 0])
+            # self._init_node = Node([8, 0, 6, 5, 4, 7, 2, 3, 1])
         else:
             self._init_node = node
 
@@ -63,8 +64,8 @@ class EightPuzzle(Problem):
             return True
         return False
 
-    def compute_cost(self):
-        pass
+    def compute_cost(self, current_node, parent_node):
+        return 1
 
     @property
     def goal_node(self):
@@ -87,3 +88,11 @@ class EightPuzzle(Problem):
         path = []
         traverse(goal_node, path)
         return path
+
+    def get_h(self, node):
+        h = 0
+        for i in node.value:
+            current_idx = node.value.index(i)
+            goal_idx = self.goal_node.value.index(i)
+            h += abs(current_idx - goal_idx)
+        return h

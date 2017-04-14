@@ -101,6 +101,9 @@ class RomaniaRoutes(Problem):
         traverse(goal_node, path)
         return path
 
+    def get_h(self, node):
+        return 100
+
     def find_node(self, city_name):
         for node in self.graph:
             if node.value.city_name == city_name:
