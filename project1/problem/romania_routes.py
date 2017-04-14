@@ -54,7 +54,8 @@ class RomaniaRoutes(Problem):
         for adjacent in node.value.adjacents:
             if adjacent == action:
                 new_node = self.find_node(adjacent[0])
-                new_node = Node(new_node.value, node, action, node.depth + 1)
+                new_node = Node(City(new_node.value.city_name, new_node.value.adjacents, action[1]),
+                                node, action, node.depth + 1)
                 return new_node
 
     def is_goal(self, node):
@@ -62,8 +63,21 @@ class RomaniaRoutes(Problem):
             return True
         return False
 
-    def compute_cost(self):
-        pass
+    def compute_cost(self, current_node, parent_node):
+        def traverse(node, cost=0):
+            if node.parent is None:
+                return cost
+            return traverse(node.parent, cost + node.value.distance)
+
+        def traverse_limited(current_node, cost=0):
+            if current_node == parent_node:
+                return cost
+            return traverse_limited(current_node.parent, cost + current_node.value.distance)
+
+        if parent_node:
+            return traverse_limited(current_node)
+        else:
+            return traverse(current_node)
 
     @property
     def goal_node(self):
@@ -77,15 +91,15 @@ class RomaniaRoutes(Problem):
             self._goal_node = node
 
     def solution(self, goal_node):
-        path = []
-        self.traverse(goal_node, path)
-        return path
+        def traverse(node, path=[]):
+            path.append(node.value.city_name)
+            if node.parent is None:
+                return
+            traverse(node.parent, path)
 
-    def traverse(self, node, path=[]):
-        path.append(node.value.city_name)
-        if node.parent is None:
-            return
-        self.traverse(node.parent, path)
+        path = []
+        traverse(goal_node, path)
+        return path
 
     def find_node(self, city_name):
         for node in self.graph:
@@ -94,9 +108,10 @@ class RomaniaRoutes(Problem):
 
 
 class City:
-    def __init__(self, city_name, adjacents):
+    def __init__(self, city_name, adjacents, distance=None):
         self.city_name = city_name
         self.adjacents = adjacents
+        self.distance = distance
 
     def __eq__(self, other):
         if isinstance(other, City):
@@ -107,3 +122,6 @@ class City:
 
     def __ne__(self, other):
         return not self == other
+
+        # def __hash__(self):
+        #     return hash(tuple(sorted({'city_name': self.city_name, 'distance': self.distance})))
