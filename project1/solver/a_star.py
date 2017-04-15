@@ -14,6 +14,7 @@ class AStar(Solver):
                               g=0,
                               h=0)]
         self.explored = set()
+        self.mem_count = 0
 
     def solve(self):
         print('running problem on A* using {method}'.format(method=self._method()))
@@ -34,6 +35,7 @@ class AStar(Solver):
                                          node.g + self.problem.compute_cost(new_node, node),
                                          self.problem.get_h(new_node))
                 self.add_to_frontier(new_weighted_node)
+            self.mem_count = max(self.mem_count, len(self.frontier) + len(self.explored))
 
     def add_to_frontier(self, node):
         if not self.tree_search and node in self.explored:

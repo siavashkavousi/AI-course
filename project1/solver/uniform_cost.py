@@ -13,6 +13,7 @@ class UniformCost(Solver):
                               depth=problem.init_node.depth,
                               g=0)]
         self.explored = set()
+        self.mem_count = 0
 
     def solve(self):
         print('running problem on uniform cost using {method}'.format(method=self._method()))
@@ -32,6 +33,7 @@ class UniformCost(Solver):
                                          new_node.depth,
                                          node.g + self.problem.compute_cost(new_node, node))
                 self.add_to_frontier(new_weighted_node)
+            self.mem_count = max(self.mem_count, len(self.frontier) + len(self.explored))
 
     def next_node(self):
         return heappop(self.frontier)

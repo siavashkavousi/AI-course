@@ -14,8 +14,7 @@ class EightPuzzle(Problem):
     @init_node.setter
     def init_node(self, node):
         if node is None:
-            self._init_node = Node([1, 2, 3, 4, 5, 7, 8, 6, 0])
-            # self._init_node = Node([8, 0, 6, 5, 4, 7, 2, 3, 1])
+            self._init_node = Node((1, 2, 3, 4, 5, 6, 7, 0, 8))
         else:
             self._init_node = node
 
@@ -54,10 +53,10 @@ class EightPuzzle(Problem):
 
         repr_value = node.value[repr_idx]
 
-        new_node = Node(node.value[:], node, action)
-        new_node.value[repr_idx] = 0
-        new_node.value[zero_idx] = repr_value
-        return new_node
+        value = list(node.value)
+        value[repr_idx] = 0
+        value[zero_idx] = repr_value
+        return Node(tuple(value[:]), node, action)
 
     def is_goal(self, node):
         if node.value == self.goal_node.value:
@@ -74,16 +73,18 @@ class EightPuzzle(Problem):
     @goal_node.setter
     def goal_node(self, node):
         if node is None:
-            self._goal_node = Node([1, 2, 3, 4, 5, 6, 7, 8, 0])
+            self._goal_node = Node((1, 2, 3, 4, 5, 6, 7, 8, 0))
         else:
             self._goal_node = node
 
-    def solution(self, goal_node, path=[]):
-        def traverse(node, path=[]):
+    def solution(self, goal_node):
+        def traverse(node, path=[], cost=0):
+            path.append('puzzle: {puzzle}, action: {action}, cost: {cost}'.format(
+                puzzle=node.value, action=node.action, cost=cost
+            ))
             if node.parent is None:
                 return
-            path.append(node.action)
-            traverse(node.parent, path)
+            traverse(node.parent, path, cost + 1)
 
         path = []
         traverse(goal_node, path)

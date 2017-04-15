@@ -59,14 +59,13 @@ class RomaniaRoutes(Problem):
             return True
         return False
 
-    def compute_cost(self, current_node=None, parent_node=None):
+    def compute_cost(self, current_node, parent_node):
         def traverse(current_node, cost=0):
             if current_node == parent_node:
                 return cost
             return traverse(current_node.parent, cost + current_node.value.distance)
 
-        if current_node and parent_node:
-            return traverse(current_node)
+        return traverse(current_node)
 
     @property
     def goal_node(self):
@@ -80,18 +79,18 @@ class RomaniaRoutes(Problem):
             self._goal_node = node
 
     def solution(self, goal_node):
-        def traverse(node, path=[]):
-            path.append(node.value.city_name)
+        def traverse(node, path=[], cost=0):
+            path.append({'city': node.value.city_name, 'cost': cost})
             if node.parent is None:
                 return
-            traverse(node.parent, path)
+            traverse(node.parent, path, cost + node.value.distance)
 
         path = []
         traverse(goal_node, path)
         return path
 
     def get_h(self, node):
-        return 100
+        return 112
 
     def find_node(self, city_name):
         for node in self.graph:

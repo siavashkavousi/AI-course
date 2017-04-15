@@ -75,11 +75,11 @@ class MissionariesAndCannibals(Problem):
             self._goal_node = node
 
     def solution(self, goal_node):
-        def traverse(node, path=[]):
-            path.append(str(node.value))
+        def traverse(node, path=[], cost=0):
+            path.append(str(node.value) + ' | cost: {cost}'.format(cost=cost))
             if node.parent is None:
                 return
-            traverse(node.parent, path)
+            traverse(node.parent, path, cost + 1)
 
         path = []
         traverse(goal_node, path)

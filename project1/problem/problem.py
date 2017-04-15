@@ -27,7 +27,7 @@ class Problem(object):
         pass
 
     @abstractmethod
-    def compute_cost(self, current_node=None, parent_node=None):
+    def compute_cost(self, current_node, parent_node):
         pass
 
     @property

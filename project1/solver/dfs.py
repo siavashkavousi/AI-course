@@ -10,6 +10,7 @@ class Dfs(Solver):
         self.is_iterative = is_iterative
         self.frontier = [problem.init_node]
         self.explored = set()
+        self.mem_count = 0
 
     def solve(self):
         if self.is_iterative:
@@ -49,6 +50,7 @@ class Dfs(Solver):
                         path = self.problem.solution(new_node)
                         return path
                 self.add_to_frontier(new_node)
+            self.mem_count = max(self.mem_count, len(self.frontier) + len(self.explored))
 
     def add_to_frontier(self, node):
         if self.tree_search:

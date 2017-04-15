@@ -8,6 +8,7 @@ class Bfs(Solver):
         super().__init__(problem, tree_search)
         self.frontier = deque([problem.init_node])
         self.explored = set()
+        self.mem_count = 0
 
     def solve(self):
         print('running problem on bfs using {method}'.format(method=self._method()))
@@ -21,6 +22,7 @@ class Bfs(Solver):
                 if self.problem.is_goal(new_node):
                     return self.problem.solution(new_node)
                 self.add_to_frontier(new_node)
+            self.mem_count = max(self.mem_count, len(self.frontier) + len(self.explored))
 
     def add_to_frontier(self, node):
         if self.tree_search:
