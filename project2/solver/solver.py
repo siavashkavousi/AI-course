@@ -5,20 +5,14 @@ from problem.problem import Problem
 class Solver(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, problem: Problem, tree_search=False):
+    def __init__(self, problem: Problem, steps):
         self.problem = problem
-        self.tree_search = tree_search
+        self.steps = steps
 
     @abstractmethod
     def solve(self):
-        pass
+        steps = 0
 
-    @abstractmethod
-    def next_node(self):
-        pass
-
-    def _method(self):
-        if self.tree_search:
-            return 'tree search'
-        else:
-            return 'graph search'
+        current_node = self.problem.init_node
+        while steps < self.steps:
+            pass
