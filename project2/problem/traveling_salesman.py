@@ -23,17 +23,15 @@ class TravelingSalesMan(Problem):
             self._init_node = node
 
     def actions(self, node):
-        cities = node.value
-        position1 = randint(0, len(cities) - 1)
-        position2 = randint(0, len(cities) - 1)
-        return [position1, position2]
+        for i in range(len(node.value)):
+            for j in range(i + 1, len(node.value)):
+                yield [i, j]
 
     def result(self, action, node):
         new_node = copy(node)
         position1, position2 = action
         cities = new_node.value
         cities[position1], cities[position2] = cities[position2], cities[position1]
-        # new_node.value[position1], new_node.value[position2] = new_node.value[position2], new_node.value[position1]
         return new_node
 
     def compute_cost(self, node):
