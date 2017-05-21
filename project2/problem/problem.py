@@ -4,6 +4,9 @@ from abc import ABCMeta, abstractmethod
 class Problem(object):
     __metaclass__ = ABCMeta
 
+    def __init__(self):
+        self.best_node = None
+
     @property
     @abstractmethod
     def init_node(self):
@@ -23,25 +26,11 @@ class Problem(object):
         pass
 
     @abstractmethod
-    def is_goal(self, node):
+    def compute_cost(self, node):
         pass
 
     @abstractmethod
-    def compute_cost(self, current_node, parent_node):
-        pass
-
-    @property
-    @abstractmethod
-    def goal_node(self):
-        pass
-
-    @goal_node.setter
-    @abstractmethod
-    def goal_node(self, node):
-        pass
-
-    @abstractmethod
-    def solution(self, goal_node):
+    def solution(self):
         pass
 
     @abstractmethod
