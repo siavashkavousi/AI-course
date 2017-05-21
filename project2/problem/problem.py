@@ -32,7 +32,3 @@ class Problem(object):
     @abstractmethod
     def solution(self):
         pass
-
-    @abstractmethod
-    def get_h(self, node):
-        pass

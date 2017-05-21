@@ -30,7 +30,7 @@ class HillClimbing(Solver):
         while True:
             actions = self.problem.actions(node)
             if self.mode == Mode.SIMPLE or self.mode == Mode.RANDOM_RESTART:
-                if self.find_best_node(node, actions) is not None:
+                if self.find_best_node(node, actions):
                     node = self.find_best_node(node, actions)
                 else:
                     break

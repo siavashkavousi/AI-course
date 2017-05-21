@@ -46,14 +46,6 @@ class TravelingSalesMan(Problem):
             print(city)
         print('distance: {distance}'.format(distance=self.compute_cost(self.best_node)))
 
-    def get_h(self, node):
-        h = 0
-        for i in node.value:
-            current_idx = node.value.index(i)
-            goal_idx = self.best_node.value.index(i)
-            h += abs(current_idx - goal_idx)
-        return h
-
 
 class City(object):
     def __init__(self, x=randint(0, 30), y=randint(0, 30)):
