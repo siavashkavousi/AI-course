@@ -1,10 +1,16 @@
 from random import randint
 
 from node import Node
-from problem.problem import Problem
+from problem.problem import GeneticProblem
 
 
-class Knapsack(Problem):
+class Knapsack(GeneticProblem):
+    def mutate(self):
+        pass
+
+    def cross_over(self):
+        pass
+
     def __init__(self, init_node=None, weight=50):
         super().__init__()
         self.init_node = init_node

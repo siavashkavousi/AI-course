@@ -32,3 +32,15 @@ class Problem(object):
     @abstractmethod
     def solution(self):
         pass
+
+
+class GeneticProblem(Problem):
+    __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def cross_over(self):
+        pass
+
+    @abstractmethod
+    def mutate(self):
+        pass
