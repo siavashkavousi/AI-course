@@ -69,7 +69,7 @@ class Annealer(Solver):
         self.problem.solution()
 
     def solution(self):
-        return self.problem.solution()
+        return self.problem.solution(self.problem.best_state)
 
     def acceptance_probability(self, current_energy, new_energy):
         if new_energy < current_energy:
