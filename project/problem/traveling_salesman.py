@@ -1,65 +1,36 @@
-from problem.problem import Problem
-from math import sqrt, pow
-from random import randint
-from node import Node
 from copy import copy
 
+from problem.problem import BestCaseProblem
+from utils import rotate
 
-class TravelingSalesMan(Problem):
-    def __init__(self, init_node=None):
-        super().__init__()
-        self.init_node = init_node
-        self.best_node = self.init_node
 
-    @property
-    def init_node(self):
-        return self._init_node
+class TravelingSalesMan(BestCaseProblem):
+    def __init__(self, init_state, dmatrix):
+        super().__init__(init_state)
+        self.dmatrix = dmatrix
 
-    @init_node.setter
-    def init_node(self, node):
-        if node is None:
-            self._init_node = Node([City(randint(0, 30), randint(0, 30)) for _ in range(0, 10)])
-        else:
-            self._init_node = node
-
-    def actions(self, node):
-        for i in range(len(node.value)):
-            for j in range(i + 1, len(node.value)):
+    def actions(self, state):
+        for i in range(len(state)):
+            for j in range(i + 1, len(state)):
                 yield [i, j]
 
-    def result(self, action, node):
-        new_node = copy(node)
+    def result(self, action, state):
         position1, position2 = action
-        cities = new_node.value
-        cities[position1], cities[position2] = cities[position2], cities[position1]
-        return new_node
+        new_state = copy(state)
+        new_state[position1], new_state[position2] = new_state[position2], new_state[position1]
+        return new_state
 
-    def compute_cost(self, node):
+    def compute_cost(self, state):
         distance = 0
-        for start_city, target_city in zip(node.value, rotate(node.value, -1)):
-            distance += start_city.distance(target_city)
+        for start_city, target_city in zip(state, rotate(state, -1)):
+            distance += self.dmatrix[start_city][target_city]
         return distance
 
-    def solution(self):
-        print('best solution:')
-        for city in self.best_node.value:
-            print(city)
-        print('distance: {distance}'.format(distance=self.compute_cost(self.best_node)))
+    def solution(self, state):
+        return {
+            'cities': state,
+            'distance': self.compute_cost(state)
+        }
 
-
-class City(object):
-    def __init__(self, x=randint(0, 30), y=randint(0, 30)):
-        self.x = x
-        self.y = y
-
-    def distance(self, city):
-        if isinstance(city, City):
-            return sqrt(abs(pow(self.x - city.x, 2)) + abs(pow(self.y - city.y, 2)))
-        raise Exception('argument is not an instance of City class')
-
-    def __str__(self):
-        return 'x: {x} and y: {y}'.format(x=self.x, y=self.y)
-
-
-def rotate(l, n):
-    return l[-n:] + l[:-n]
+    def get_h(self, node):
+        pass

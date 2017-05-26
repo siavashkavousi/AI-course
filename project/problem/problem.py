@@ -4,20 +4,23 @@ from abc import ABCMeta, abstractmethod
 class Problem(object):
     __metaclass__ = ABCMeta
 
+    def __init__(self, init_state):
+        self.init_state = init_state
+
     @abstractmethod
-    def actions(self, node):
+    def actions(self, state):
         pass
 
     @abstractmethod
-    def result(self, action, node):
+    def result(self, action, state):
         pass
 
     @abstractmethod
-    def compute_cost(self, node):
+    def compute_cost(self, state):
         pass
 
     @abstractmethod
-    def solution(self, goal_node):
+    def solution(self, state):
         pass
 
     @abstractmethod
@@ -28,47 +31,24 @@ class Problem(object):
 class GoalBaseProblem(Problem):
     __metaclass__ = ABCMeta
 
-    @property
-    @abstractmethod
-    def init_node(self):
-        pass
-
-    @init_node.setter
-    @abstractmethod
-    def init_node(self, node):
-        pass
+    def __init__(self, init_state, goal_state):
+        super().__init__(init_state)
+        self.goal_state = goal_state
 
     @abstractmethod
     def is_goal(self, node):
-        pass
-
-    @property
-    @abstractmethod
-    def goal_node(self):
-        pass
-
-    @goal_node.setter
-    @abstractmethod
-    def goal_node(self, node):
         pass
 
 
 class BestCaseProblem(Problem):
     __metaclass__ = ABCMeta
 
-    @property
-    @abstractmethod
-    def random_node(self):
-        pass
+    def __init__(self, init_state):
+        super().__init__(init_state)
+        self.best_state = init_state
 
-    @property
     @abstractmethod
-    def best_node(self):
-        pass
-
-    @best_node.setter
-    @abstractmethod
-    def best_node(self, node):
+    def get_h(self, node):
         pass
 
 

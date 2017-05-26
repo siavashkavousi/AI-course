@@ -2,40 +2,9 @@ import math
 from abc import ABCMeta, abstractmethod
 from random import random, choice
 
-from problem.problem import Problem
+from node import Node
+from problem.problem import BestCaseProblem
 from solver.solver import Solver
-
-
-class Annealer(Solver):
-    def __init__(self, problem: Problem, cooling_scheduler: CoolingScheduler, temperature=5000, threshold=1):
-        super().__init__(problem)
-        self.temperature = temperature
-        self.threshold = threshold
-        self.cooling_scheduler = cooling_scheduler
-
-    def solve(self):
-        n = 0
-        node = self.problem.init_node
-
-        while self.temperature > self.threshold:
-            actions = list(self.problem.actions(node))
-            new_node = self.problem.result(choice(actions), node)
-
-            if self.acceptance_probability(self.problem.compute_cost(node),
-                                           self.problem.compute_cost(new_node)) > random():
-                node = new_node
-            if self.problem.compute_cost(node) < self.problem.compute_cost(self.problem.best_node):
-                self.problem.best_node = node
-
-            n += 1
-            self.temperature = self.cooling_scheduler.tn()
-
-        self.problem.solution()
-
-    def acceptance_probability(self, current_energy, new_energy):
-        if new_energy < current_energy:
-            return 1
-        return math.exp((current_energy - new_energy) / self.temperature)
 
 
 class CoolingScheduler(object):
@@ -68,3 +37,41 @@ class LinearMultiplicativeScheduler(CoolingScheduler):
 class QuadraticMultiplicativeScheduler(CoolingScheduler):
     def tn(self, n):
         return self.t0 / (1 + self.a * math.pow(n, 2))
+
+
+class Annealer(Solver):
+    def __init__(self, problem: BestCaseProblem, cooling_scheduler: CoolingScheduler, temperature=5000, threshold=1):
+        super().__init__(problem)
+        self.temperature = temperature
+        self.threshold = threshold
+        self.cooling_scheduler = cooling_scheduler
+
+    def solve(self):
+        n = 0
+        node = Node(self.problem.init_state)
+
+        while self.temperature > self.threshold:
+            actions = list(self.problem.actions(node.value))
+            new_node = Node(self.problem.result(choice(actions), node.value), node)
+
+            # check if new node has a higher energy or not and if not randomly accept new node
+            if self.acceptance_probability(self.problem.compute_cost(node.value),
+                                           self.problem.compute_cost(new_node.value)) > random():
+                node = new_node
+
+            # keep best state
+            if self.problem.compute_cost(node.value) < self.problem.compute_cost(self.problem.best_state):
+                self.problem.best_state = node.value
+
+            n += 1
+            self.temperature = self.cooling_scheduler.tn(n)
+
+        self.problem.solution()
+
+    def solution(self):
+        return self.problem.solution()
+
+    def acceptance_probability(self, current_energy, new_energy):
+        if new_energy < current_energy:
+            return 1
+        return math.exp((current_energy - new_energy) / self.temperature)

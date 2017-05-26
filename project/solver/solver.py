@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+
 from problem.problem import Problem
 
 
@@ -11,6 +12,10 @@ class Solver(object):
 
     @abstractmethod
     def solve(self):
+        pass
+
+    @abstractmethod
+    def solution(self):
         pass
 
     @abstractmethod
