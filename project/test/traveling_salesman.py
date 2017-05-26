@@ -1,5 +1,6 @@
 from problem.traveling_salesman import TravelingSalesMan
-from solver.anneal import Annealer, ExponentialMultiplicativeScheduler
+from solver.anneal import Annealer, LinearMultiplicativeScheduler, LogarithmicMultiplicativeScheduler, \
+    QuadraticMultiplicativeScheduler
 from solver.hill_climbing import HillClimbing, Mode
 
 
@@ -27,8 +28,32 @@ if __name__ == '__main__':
     ]
 
     traveling_sales_man = TravelingSalesMan(init_state=[i for i in range(num_cities)], dmatrix=cities)
-    annealer = Annealer(traveling_sales_man, ExponentialMultiplicativeScheduler(50))
-    hill_climbing = HillClimbing(traveling_sales_man, mode=Mode.SIMPLE)
+    # Annealer
+    annealer = Annealer(traveling_sales_man, LinearMultiplicativeScheduler(50))
     annealer.solve()
-    print(annealer.solution())
-    # hill_climbing.solve()
+    annealer.print_solution()
+
+    annealer = Annealer(traveling_sales_man, LogarithmicMultiplicativeScheduler(5))
+    annealer.solve()
+    annealer.print_solution()
+
+    annealer = Annealer(traveling_sales_man, QuadraticMultiplicativeScheduler(5))
+    annealer.solve()
+    annealer.print_solution()
+
+    # Hill climbing
+    hill_climbing = HillClimbing(traveling_sales_man, mode=Mode.SIMPLE)
+    hill_climbing.solve()
+    hill_climbing.print_solution()
+
+    hill_climbing = HillClimbing(traveling_sales_man, mode=Mode.STOCHASTIC)
+    hill_climbing.solve()
+    hill_climbing.print_solution()
+
+    hill_climbing = HillClimbing(traveling_sales_man, mode=Mode.FIRST_CHOICE)
+    hill_climbing.solve()
+    hill_climbing.print_solution()
+
+    hill_climbing = HillClimbing(traveling_sales_man, mode=Mode.RANDOM_RESTART)
+    hill_climbing.solve()
+    hill_climbing.print_solution()

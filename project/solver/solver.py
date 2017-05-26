@@ -9,6 +9,8 @@ class Solver(object):
     def __init__(self, problem: Problem, tree_search=False):
         self.problem = problem
         self.tree_search = tree_search
+        self.num_of_created_nodes = 1
+        self.num_of_expanded_nodes = 1
 
     @abstractmethod
     def solve(self):

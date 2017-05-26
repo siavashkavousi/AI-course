@@ -26,23 +26,31 @@ class HillClimbing(Solver):
 
     def _solve(self):
         node = Node(self.problem.init_state)
+        best_state = None
 
         while True:
             actions = list(self.problem.actions(node.value))
             if self.mode == Mode.SIMPLE or self.mode == Mode.RANDOM_RESTART:
-                if self.find_best_state(node.value, actions):
-                    node = Node(self.find_best_state(node.value, actions))
+                if best_state != self.find_best_state(node.value, actions):
+                    best_state = self.find_best_state(node.value, actions)
+                    node = Node(best_state)
+                    self.num_of_created_nodes += 1
+                    self.num_of_expanded_nodes += 1
                 else:
                     break
             elif self.mode == Mode.STOCHASTIC:
                 new_nodes = list(map(lambda x: Node(x), self.find_better_states(node.value, actions)))
+                self.num_of_created_nodes += len(new_nodes)
                 if len(new_nodes) > 0:
                     node = random.choice(new_nodes)
+                    self.num_of_expanded_nodes += 1
                 else:
                     break
             elif self.mode == Mode.FIRST_CHOICE:
                 if self.find_better_state(node.value, actions):
                     node = Node(self.find_better_state(node.value, actions))
+                    self.num_of_created_nodes += 1
+                    self.num_of_expanded_nodes += 1
                 else:
                     break
 
@@ -50,6 +58,12 @@ class HillClimbing(Solver):
 
     def solution(self):
         return self.problem.solution(self.problem.best_state)
+
+    def print_solution(self):
+        print('hill climbing in {mode} mode'.format(mode=self.mode))
+        print('number of created nodes: {n}'.format(n=self.num_of_created_nodes))
+        print('number of expanded nodes: {n}'.format(n=self.num_of_expanded_nodes))
+        print('solution: {solution}'.format(solution=self.solution()))
 
     def find_best_state(self, state, actions):
         best_state = state
