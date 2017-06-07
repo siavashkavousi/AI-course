@@ -14,6 +14,6 @@ if __name__ == '__main__':
     for item in path:
         print(item)
     print('execution time: {time}'.format(time=finish_time - start_time))
-    if not dfs.tree_search:
-        print('number of expanded nodes: {count}'.format(count=len(dfs.closed_list)))
+    print('number of created nodes: {count}'.format(count=dfs.num_of_created_nodes))
+    print('number of expanded nodes: {count}'.format(count=dfs.num_of_expanded_nodes))
     print('maximum memory usage: {usage}'.format(usage=dfs.mem_count))

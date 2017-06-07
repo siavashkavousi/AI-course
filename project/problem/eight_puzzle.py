@@ -44,28 +44,19 @@ class EightPuzzle(GoalBaseProblem):
         value[repr_idx] = 0
         value[zero_idx] = repr_value
         return tuple(value[:])
-        # return Node(tuple(value[:]), state, action)
 
     def is_goal(self, state):
         if state == self.goal_state:
             return True
         return False
 
-    def compute_cost(self, current_node, parent_node):
+    def compute_cost(self, state):
         return 1
 
-    def solution(self, goal_node):
-        def traverse(node, path=[], cost=0):
-            path.append('puzzle: {puzzle}, action: {action}, cost: {cost}'.format(
-                puzzle=node.value, action=node.action, cost=cost
-            ))
-            if node.parent is None:
-                return
-            traverse(node.parent, path, cost + 1)
-
-        path = []
-        traverse(goal_node, path)
-        return path
+    def solution(self, state):
+        return {
+            'puzzle': state,
+        }
 
     def get_h(self, node):
         h = 0

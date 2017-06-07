@@ -2,10 +2,10 @@ import math
 
 from node import Node
 from problem.problem import Problem
-from .solver import Solver
+from .solver import GoalBaseSolver
 
 
-class Dfs(Solver):
+class Dfs(GoalBaseSolver):
     def __init__(self, problem: Problem, tree_search=False, is_iterative=False, depth_limit=math.inf):
         super().__init__(problem, tree_search)
         self.depth_limit = depth_limit
@@ -42,23 +42,33 @@ class Dfs(Solver):
             if not self.tree_search:
                 self.closed_list.add(node)
 
-            for action in self.problem.actions(node):
-                new_node = Node(self.problem.result(action, node),node,action, node.depth+1)
+            for action in self.problem.actions(node.value):
+                new_node = Node(self.problem.result(action, node.value), node, action, node.depth + 1)
+                self.num_of_created_nodes += 1
                 if new_node.depth > depth:
                     return None
                 else:
-                    if self.problem.is_goal(new_node):
-                        path = self.problem.solution(new_node)
-                        return path
+                    if self.problem.is_goal(new_node.value):
+                        return self.solution(new_node)
                 self.add_to_frontier(new_node)
             self.mem_count = max(self.mem_count, len(self.frontier) + len(self.closed_list))
 
-    def solution(self):
-        return self.problem.solution()
+    def solution(self, goal_node):
+        def traverse(node, path=[], cost=0):
+            self.problem.solution(node.value)
+            path.append('action: {action}, cost: {cost}'.format(action=node.action, cost=cost))
+            if node.parent is None:
+                return
+            traverse(node.parent, path, cost + self.problem.compute_cost(node.value))
+
+        path = []
+        traverse(goal_node, path)
+        return path
 
     def add_to_frontier(self, node):
         if self.tree_search:
             self.frontier.append(node)
+            self.num_of_expanded_nodes += 1
         else:
             if node in self.frontier:
                 return
@@ -66,3 +76,4 @@ class Dfs(Solver):
                 return
             else:
                 self.frontier.append(node)
+                self.num_of_created_nodes += 1
