@@ -1,25 +1,12 @@
-from problem.problem import Problem
-from node import Node
+from problem.problem import GoalBaseProblem
 
 
-class EightPuzzle(Problem):
-    def __init__(self, init_node=None, goal_node=None):
-        self.init_node = init_node
-        self.goal_node = goal_node
+class EightPuzzle(GoalBaseProblem):
+    def __init__(self, init_state=None, goal_state=None):
+        super().__init__(init_state, goal_state)
 
-    @property
-    def init_node(self):
-        return self._init_node
-
-    @init_node.setter
-    def init_node(self, node):
-        if node is None:
-            self._init_node = Node((1, 2, 3, 4, 5, 6, 7, 0, 8))
-        else:
-            self._init_node = node
-
-    def actions(self, node):
-        index = node.value.index(0)
+    def actions(self, state):
+        index = state.index(0)
         if index == 0:
             return 'right', 'down'
         elif index == 1:
@@ -39,8 +26,8 @@ class EightPuzzle(Problem):
         elif index == 8:
             return 'left', 'up'
 
-    def result(self, action, node):
-        zero_idx = node.value.index(0)
+    def result(self, action, state):
+        zero_idx = state.index(0)
         repr_idx = None
         if action == 'left':
             repr_idx = zero_idx - 1
@@ -51,31 +38,21 @@ class EightPuzzle(Problem):
         elif action == 'down':
             repr_idx = zero_idx + 3
 
-        repr_value = node.value[repr_idx]
+        repr_value = state[repr_idx]
 
-        value = list(node.value)
+        value = list(state)
         value[repr_idx] = 0
         value[zero_idx] = repr_value
-        return Node(tuple(value[:]), node, action)
+        return tuple(value[:])
+        # return Node(tuple(value[:]), state, action)
 
-    def is_goal(self, node):
-        if node.value == self.goal_node.value:
+    def is_goal(self, state):
+        if state == self.goal_state:
             return True
         return False
 
     def compute_cost(self, current_node, parent_node):
         return 1
-
-    @property
-    def goal_node(self):
-        return self._goal_node
-
-    @goal_node.setter
-    def goal_node(self, node):
-        if node is None:
-            self._goal_node = Node((1, 2, 3, 4, 5, 6, 7, 8, 0))
-        else:
-            self._goal_node = node
 
     def solution(self, goal_node):
         def traverse(node, path=[], cost=0):

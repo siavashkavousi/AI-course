@@ -17,5 +17,5 @@ class TestDfsGraphRomaniaRoutes(TestCase):
             print(item)
         print('execution time: {time}'.format(time=finish_time - start_time))
         if not dfs.tree_search:
-            print('number of explored nodes: {count}'.format(count=len(dfs.explored)))
+            print('number of explored nodes: {count}'.format(count=len(dfs.closed_list)))
         print('maximum memory usage: {usage}'.format(usage=dfs.mem_count))

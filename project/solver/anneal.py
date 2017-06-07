@@ -83,12 +83,6 @@ class Annealer(Solver):
     def solution(self):
         return self.problem.solution(self.problem.best_state)
 
-    def print_solution(self):
-        print('annealer with {cooling_scheduler} cooling scheduler'.format(cooling_scheduler=self.cooling_scheduler))
-        print('number of created nodes: {n}'.format(n=self.num_of_created_nodes))
-        print('number of expanded nodes: {n}'.format(n=self.num_of_expanded_nodes))
-        print('solution: {solution}'.format(solution=self.solution()))
-
     def acceptance_probability(self, current_energy, new_energy):
         if new_energy < current_energy:
             return 1

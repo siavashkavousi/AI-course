@@ -36,7 +36,7 @@ class GoalBaseProblem(Problem):
         self.goal_state = goal_state
 
     @abstractmethod
-    def is_goal(self, node):
+    def is_goal(self, state):
         pass
 
 
@@ -56,7 +56,11 @@ class GeneticProblem(BestCaseProblem):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def cross_over(self):
+    def fitness(self, population):
+        pass
+
+    @abstractmethod
+    def cross_over(self, ind1, ind2):
         pass
 
     @abstractmethod

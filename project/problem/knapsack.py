@@ -1,43 +1,54 @@
+from functools import reduce
 from random import randint
 
-from node import Node
+import numpy as np
+
 from problem.problem import GeneticProblem
 
 
 class Knapsack(GeneticProblem):
-    def mutate(self):
+    def __init__(self, weights, values, W, init_state=None):
+        super().__init__(init_state)
+        self.weights = weights
+        self.values = values
+        self.W = W
+
+    def random_state(self):
+        while True:
+            weight = reduce(lambda x, y: x + y, np.random.choice([0, 1], size=len(self.weights)) * self.weights)
+            if weight < self.W:
+                return weight
+
+    def actions(self, state):
+        pass
+        # for i in range(len(self.items)):
+        #     for combination in itertools.combinations(self.items, i):
+        #         if sum(combination) < self.weight:
+        #             yield combination
+
+    def result(self, action, state):
+        pass
+        # return action
+
+    def compute_cost(self, state):
         pass
 
-    def cross_over(self):
+    def fitness(self, population):
+        return reduce(lambda x, y: x + y, population)
+
+    def mutate(self, population):
+        return np.random.choice([0, 1], size=len(self.weights)) * population
+
+    def cross_over(self, ind1, ind2):
+        slice_index = randint(0, len(ind1))
+        temp = ind1[0:slice_index]
+        ind1[0:slice_index] = ind2[0:slice_index]
+        ind2[0:slice_index] = temp
+
+    def solution(self, state):
         pass
 
-    def __init__(self, init_node=None, weight=50):
-        super().__init__()
-        self.init_node = init_node
-        self.best_node = self.init_node
-        self.weight = weight
-
-    @property
-    def init_node(self):
-        return self._init_node
-
-    @init_node.setter
-    def init_node(self, node):
-        if node is None:
-            self._init_node = Node([Item(randint(0, 30), randint(0, 15)) for _ in range(0, 10)])
-        else:
-            self._init_node = node
-
-    def actions(self, node):
-        pass
-
-    def result(self, action, node):
-        pass
-
-    def compute_cost(self, node):
-        pass
-
-    def solution(self):
+    def get_h(self, node):
         pass
 
 

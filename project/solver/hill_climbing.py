@@ -59,12 +59,6 @@ class HillClimbing(Solver):
     def solution(self):
         return self.problem.solution(self.problem.best_state)
 
-    def print_solution(self):
-        print('hill climbing in {mode} mode'.format(mode=self.mode))
-        print('number of created nodes: {n}'.format(n=self.num_of_created_nodes))
-        print('number of expanded nodes: {n}'.format(n=self.num_of_expanded_nodes))
-        print('solution: {solution}'.format(solution=self.solution()))
-
     def find_best_state(self, state, actions):
         best_state = state
         for action in actions:

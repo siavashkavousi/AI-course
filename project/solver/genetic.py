@@ -12,26 +12,24 @@ class Genetic(Solver):
         while True:
             self.population = self.select()
             offsprings = self.cross_over()
-            self.mutate_offsprings(offsprings)
-            self.population = self.select_new_population(offsprings)
+            self.population = self.mutate_offsprings(offsprings)
+            # self.population = self.select_new_population(offsprings)
 
     def select(self):
         self.population = sorted(self.population, key=self.eval_fitness)
         return self.population[:len(self.population) / 2]
 
     def cross_over(self):
-        return [self.problem.cross_over() for _ in self.population]
+        return [self.problem.cross_over(ind1, ind2) for ind1, ind2 in zip(self.population, self.population)]
 
     def mutate_offsprings(self, offsprings):
-        for individual in offsprings:
-            individual.mutate()
+        return [self.problem.mutate(individual) for individual in offsprings]
 
     def select_new_population(self, offsprings):
         pass
 
     def create_init_population(self):
-        return [self.problem.init_node for _ in range(self.population_size)]
+        return [self.problem.random_state for _ in range(self.population_size)]
 
-    def eval_fitness(self, node):
-        return self.problem.fitness(node)
-        # return reduce(lambda x, y: x.value + y.value, node.value)
+    def eval_fitness(self, state):
+        return self.problem.fitness(state)

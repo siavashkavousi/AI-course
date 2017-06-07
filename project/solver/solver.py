@@ -20,10 +20,6 @@ class Solver(object):
     def solution(self):
         pass
 
-    @abstractmethod
-    def next_node(self):
-        pass
-
     def _method(self):
         if self.tree_search:
             return 'tree search'

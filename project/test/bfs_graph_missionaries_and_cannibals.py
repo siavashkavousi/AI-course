@@ -17,5 +17,5 @@ class TestBfsGraphMissionariesAndCannibals(TestCase):
             print(item)
         print('execution time: {time}'.format(time=finish_time - start_time))
         if not bfs.tree_search:
-            print('number of explored nodes: {count}'.format(count=len(bfs.explored)))
+            print('number of explored nodes: {count}'.format(count=len(bfs.closed_list)))
         print('maximum memory usage: {usage}'.format(usage=bfs.mem_count))
