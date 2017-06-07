@@ -25,8 +25,8 @@ class GoalBaseSolver(Solver):
 
     def solution(self, goal_node):
         def traverse(node, path=[]):
-            self.problem.solution(node.value)
-            path.append('action: {action}, cost: {cost}'.format(action=node.action, cost=node.g))
+            path.append('value: {value}\naction: {action}, cost: {cost}'
+                        .format(value=self.problem.solution(node.value), action=node.action, cost=node.g))
             if node.parent is None:
                 return
             traverse(node.parent, path)

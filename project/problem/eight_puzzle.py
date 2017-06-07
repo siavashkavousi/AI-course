@@ -58,10 +58,10 @@ class EightPuzzle(GoalBaseProblem):
             'puzzle': state,
         }
 
-    def get_h(self, node):
+    def get_h(self, state):
         h = 0
-        for i in node.value:
-            current_idx = node.value.index(i)
-            goal_idx = self.goal_node.value.index(i)
+        for i in state:
+            current_idx = state.index(i)
+            goal_idx = self.goal_state.index(i)
             h += abs(current_idx - goal_idx)
         return h

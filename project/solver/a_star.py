@@ -27,7 +27,7 @@ class AStar(GoalBaseSolver):
                                 parent=node,
                                 action=action,
                                 depth=node.depth + 1,
-                                g=node.g + self.problem.compute_cost(),
+                                g=node.g + self.problem.compute_cost(node.value),
                                 h=self.problem.get_h(node.value))
                 self.num_of_created_nodes += 1
                 self.add_to_frontier(new_node)

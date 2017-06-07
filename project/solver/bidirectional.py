@@ -8,8 +8,8 @@ from .solver import GoalBaseSolver
 class Bidirectional(GoalBaseSolver):
     def __init__(self, problem: GoalBaseProblem, tree_search=False):
         super().__init__(problem, tree_search)
-        self.frontier_start = deque(Node([problem.init_state]))
-        self.frontier_end = deque(Node([problem.goal_state]))
+        self.frontier_start = deque([Node(problem.init_state)])
+        self.frontier_end = deque([Node(problem.goal_state)])
         self.closed_list_start = set()
         self.closed_list_end = set()
         self.mem_count = 0

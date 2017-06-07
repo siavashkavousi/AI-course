@@ -18,6 +18,7 @@ if __name__ == '__main__':
     print('number of created nodes: {count}'.format(count=dfs.num_of_created_nodes))
     print('number of expanded nodes: {count}'.format(count=dfs.num_of_expanded_nodes))
     print('maximum memory usage: {usage}'.format(usage=dfs.mem_count))
+    print()
 
     a_star = AStar(eight_puzzle)
     start_time = time.process_time()
@@ -29,6 +30,7 @@ if __name__ == '__main__':
     print('number of created nodes: {count}'.format(count=a_star.num_of_created_nodes))
     print('number of expanded nodes: {count}'.format(count=a_star.num_of_expanded_nodes))
     print('maximum memory usage: {usage}'.format(usage=a_star.mem_count))
+    print()
 
     bidirectional = Bidirectional(eight_puzzle)
     start_time = time.process_time()
@@ -40,3 +42,4 @@ if __name__ == '__main__':
     print('number of created nodes: {count}'.format(count=a_star.num_of_created_nodes))
     print('number of expanded nodes: {count}'.format(count=a_star.num_of_expanded_nodes))
     print('maximum memory usage: {usage}'.format(usage=bidirectional.mem_count))
+    print()

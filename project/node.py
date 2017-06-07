@@ -1,12 +1,14 @@
 class Node(object):
-    def __init__(self, value, parent=None, action=None, depth=0, g=None, h=None):
+    def __init__(self, value, parent=None, action=None, depth=0, g=0, h=None):
         self.value = value
         self.parent = parent
         self.action = action
         self.depth = depth
         self.h = h
         self.g = g
-        self.f = g + h
+
+        if g and h:
+            self.f = g + h
 
     def __eq__(self, other):
         if isinstance(other, Node):
