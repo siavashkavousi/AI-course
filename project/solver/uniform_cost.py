@@ -1,6 +1,7 @@
-from problem.problem import Problem
-from node import Node
 from heapq import heappush, heappop
+
+from node import Node
+from problem.problem import Problem
 from .solver import Solver
 
 

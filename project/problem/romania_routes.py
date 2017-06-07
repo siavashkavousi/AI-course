@@ -1,9 +1,10 @@
-from problem.problem import Problem
 from node import Node
+from problem.problem import Problem
 
 
 class RomaniaRoutes(Problem):
-    def __init__(self, init_node=None, goal_node=None):
+    def __init__(self, init_state):
+        super().__init__(init_state)
         self.graph = [
             Node(City('arad', [('zerind', 75), ('timisoara', 118), ('sibiu', 140)])),
             Node(City('vaslui', [('urziceni', 142), ('lasi', 92)])),
@@ -26,8 +27,6 @@ class RomaniaRoutes(Problem):
             Node(City('lasi', [('neamt', 87), ('vaslui', 92)])),
             Node(City('neamt', [('lasi', 87)])),
         ]
-        self.init_node = init_node
-        self.goal_node = goal_node
 
     @property
     def init_node(self):
@@ -59,17 +58,17 @@ class RomaniaRoutes(Problem):
             return True
         return False
 
-    def compute_cost(self, current_node, parent_node):
-        def traverse(current_node, cost=0):
-            if current_node == parent_node:
-                return cost
-            return traverse(current_node.parent, cost + current_node.value.distance)
-
-        return traverse(current_node)
-
     @property
     def goal_node(self):
         return self._goal_node
+
+    # def compute_cost(self, current_node, parent_node):
+    #     def traverse(current_node, cost=0):
+    #         if current_node == parent_node:
+    #             return cost
+    #         return traverse(current_node.parent, cost + current_node.value.distance)
+    #
+    #     return traverse(current_node)
 
     @goal_node.setter
     def goal_node(self, node):
@@ -78,16 +77,13 @@ class RomaniaRoutes(Problem):
         else:
             self._goal_node = node
 
-    def solution(self, goal_node):
-        def traverse(node, path=[], cost=0):
-            path.append({'city': node.value.city_name, 'cost': cost})
-            if node.parent is None:
-                return
-            traverse(node.parent, path, cost + node.value.distance)
+    def compute_cost(self, state):
+        return state.distance
 
-        path = []
-        traverse(goal_node, path)
-        return path
+    def solution(self, state):
+        return {
+            'city': state.city_name,
+        }
 
     def get_h(self, node):
         return 112

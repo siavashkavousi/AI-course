@@ -1,5 +1,5 @@
-from problem.problem import Problem
 from node import Node
+from problem.problem import Problem
 
 
 class MissionariesAndCannibals(Problem):

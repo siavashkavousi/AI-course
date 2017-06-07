@@ -1,23 +1,12 @@
 class Node(object):
     def __init__(self, value, parent=None, action=None, depth=0, g=None, h=None):
-        self.depth = depth
-        self.action = action
+        self.value = value
         self.parent = parent
+        self.action = action
+        self.depth = depth
         self.h = h
         self.g = g
-        self.value = value
-        self.f = [g, h]
-
-    @property
-    def f(self):
-        return self._f
-
-    @f.setter
-    def f(self, value):
-        if value[0] and value[1]:
-            self._f = value[0] + value[1]
-        else:
-            self._f = None
+        self.f = g + h
 
     def __eq__(self, other):
         if isinstance(other, Node):

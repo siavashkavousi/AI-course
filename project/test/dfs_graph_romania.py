@@ -1,7 +1,8 @@
+import time
 from unittest import TestCase
+
 from problem.romania_routes import RomaniaRoutes
 from solver.dfs import Dfs
-import time
 
 
 class TestDfsGraphRomaniaRoutes(TestCase):

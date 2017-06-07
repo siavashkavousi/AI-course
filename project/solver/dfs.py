@@ -1,12 +1,12 @@
 import math
 
 from node import Node
-from problem.problem import Problem
+from problem.problem import GoalBaseProblem
 from .solver import GoalBaseSolver
 
 
 class Dfs(GoalBaseSolver):
-    def __init__(self, problem: Problem, tree_search=False, is_iterative=False, depth_limit=math.inf):
+    def __init__(self, problem: GoalBaseProblem, tree_search=False, is_iterative=False, depth_limit=math.inf):
         super().__init__(problem, tree_search)
         self.depth_limit = depth_limit
         self.is_iterative = is_iterative
@@ -43,7 +43,11 @@ class Dfs(GoalBaseSolver):
                 self.closed_list.add(node)
 
             for action in self.problem.actions(node.value):
-                new_node = Node(self.problem.result(action, node.value), node, action, node.depth + 1)
+                new_node = Node(value=self.problem.result(action, node.value),
+                                parent=node,
+                                action=action,
+                                depth=node.depth + 1,
+                                g=node.g + self.problem.compute_cost(node.value))
                 self.num_of_created_nodes += 1
                 if new_node.depth > depth:
                     return None
@@ -52,18 +56,6 @@ class Dfs(GoalBaseSolver):
                         return self.solution(new_node)
                 self.add_to_frontier(new_node)
             self.mem_count = max(self.mem_count, len(self.frontier) + len(self.closed_list))
-
-    def solution(self, goal_node):
-        def traverse(node, path=[], cost=0):
-            self.problem.solution(node.value)
-            path.append('action: {action}, cost: {cost}'.format(action=node.action, cost=cost))
-            if node.parent is None:
-                return
-            traverse(node.parent, path, cost + self.problem.compute_cost(node.value))
-
-        path = []
-        traverse(goal_node, path)
-        return path
 
     def add_to_frontier(self, node):
         if self.tree_search:

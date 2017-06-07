@@ -24,7 +24,7 @@ class Problem(object):
         pass
 
     @abstractmethod
-    def get_h(self, node):
+    def get_h(self, state):
         pass
 
 

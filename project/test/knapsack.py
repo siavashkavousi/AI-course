@@ -1,5 +1,3 @@
-import numpy as np
-
 from problem.knapsack import Knapsack, Item
 
 if __name__ == '__main__':

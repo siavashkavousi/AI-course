@@ -1,7 +1,8 @@
+import time
 from unittest import TestCase
+
 from problem.missionaries_and_cannibals import MissionariesAndCannibals
 from solver.dfs import Dfs
-import time
 
 
 class TestDfsGraphMissionariesAndCannibals(TestCase):

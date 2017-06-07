@@ -23,9 +23,17 @@ class GoalBaseSolver(Solver):
         super().__init__(problem)
         self.tree_search = tree_search
 
-    @abstractmethod
     def solution(self, goal_node):
-        pass
+        def traverse(node, path=[]):
+            self.problem.solution(node.value)
+            path.append('action: {action}, cost: {cost}'.format(action=node.action, cost=node.g))
+            if node.parent is None:
+                return
+            traverse(node.parent, path)
+
+        path = []
+        traverse(goal_node, path)
+        return path
 
     def _method(self):
         if self.tree_search:
