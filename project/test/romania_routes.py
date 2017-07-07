@@ -2,6 +2,8 @@ import time
 
 from problem.romania_routes import RomaniaRoutes, City
 from solver.a_star import AStar
+from solver.bfs import Bfs
+from solver.dfs import Dfs
 
 if __name__ == '__main__':
     graph = [
@@ -35,6 +37,34 @@ if __name__ == '__main__':
     for item in path:
         print(item)
     print('execution time: {time}'.format(time=finish_time - start_time))
-    if not a_star.tree_search:
-        print('number of explored nodes: {count}'.format(count=len(a_star.closed_list)))
+    print('number of created nodes: {count}'.format(count=a_star.num_of_created_nodes))
+    print('number of expanded nodes: {count}'.format(count=a_star.num_of_expanded_nodes))
     print('maximum memory usage: {usage}'.format(usage=a_star.mem_count))
+    print()
+
+    bfs = Bfs(romania_routes, tree_search=True)
+    start_time = time.process_time()
+    path = bfs.solve()
+    finish_time = time.process_time()
+    for item in path:
+        print(item)
+    print('execution time: {time}'.format(time=finish_time - start_time))
+    print('number of created nodes: {count}'.format(count=bfs.num_of_created_nodes))
+    print('number of expanded nodes: {count}'.format(count=bfs.num_of_expanded_nodes))
+    print('maximum memory usage: {usage}'.format(usage=bfs.mem_count))
+    print()
+
+    dfs = Dfs(romania_routes, depth_limit=3)
+    start_time = time.process_time()
+    path = dfs.solve()
+    finish_time = time.process_time()
+    if path is None:
+        print('solution in depth: {depth} was not found, try deeper!'.format(depth=8))
+    else:
+        for item in path:
+            print(item)
+        print('execution time: {time}'.format(time=finish_time - start_time))
+        print('number of created nodes: {count}'.format(count=dfs.num_of_created_nodes))
+        print('number of expanded nodes: {count}'.format(count=dfs.num_of_expanded_nodes))
+        print('maximum memory usage: {usage}'.format(usage=dfs.mem_count))
+        print()
