@@ -1,3 +1,5 @@
+from functools import reduce
+
 from problem.problem import GoalBaseProblem
 
 
@@ -59,9 +61,4 @@ class EightPuzzle(GoalBaseProblem):
         }
 
     def get_h(self, state):
-        h = 0
-        for i in state:
-            current_idx = state.index(i)
-            goal_idx = self.goal_state.index(i)
-            h += abs(current_idx - goal_idx)
-        return h
+        return reduce(lambda x, y: x + y, map(lambda i: abs(state.index(i) - self.goal_state.index(i)), state))

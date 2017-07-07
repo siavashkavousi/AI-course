@@ -47,10 +47,6 @@ class BestCaseProblem(Problem):
         super().__init__(init_state)
         self.best_state = init_state
 
-    @abstractmethod
-    def get_h(self, node):
-        pass
-
 
 class GeneticProblem(BestCaseProblem):
     __metaclass__ = ABCMeta
